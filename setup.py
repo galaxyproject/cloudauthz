@@ -9,9 +9,9 @@ import re
 from distutils.core import setup
 
 prog = re.compile(r'__version__\s*=\s*(.+)')
-with open(os.path.join('cloud_authz', '__init__.py')) as file:
-    for line in file:
-        match_object = prog.match(line)
+with open(os.path.join('cloud_authz', '__init__.py')) as f:
+    for l in f:
+        match_object = prog.match(l)
         if match_object:
             version = ast.literal_eval(match_object.group(1))
             break
