@@ -3,13 +3,18 @@ Package install information.
 """
 
 import ast
-import os
 import re
 
-from distutils.core import setup
+from setuptools import setup, find_packages
+from os import path
+
+current_directory = path.abspath(path.dirname(__file__))
+
+with open(path.join(current_directory, 'README.md')) as f:
+    long_description = f.read()
 
 prog = re.compile(r'__version__\s*=\s*(.+)')
-with open(os.path.join('cloud_authz', '__init__.py')) as f:
+with open(path.join(current_directory, 'cloud_authz', '__init__.py')) as f:
     for l in f:
         match_object = prog.match(l)
         if match_object:
@@ -23,10 +28,17 @@ REQ = [
 setup(
     name='cloud-authz',
     version=version,
-    description='Implements means of authorization delegation on cloud-based '
-                'resource providers without sharing credentials.',
+    description='Implements means of authorization delegation on cloud-based resource providers.',
+    long_description=long_description,
     author='Vahid Jalili',
+    author_email='jalili.vahid@gmail.com',
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+    ],
     url='https://github.com/galaxyproject/cloud-authz',
     install_requires=REQ,
-    license='MIT'
+    license='MIT',
+    keywords='Cloud Authorization Access',
 )
