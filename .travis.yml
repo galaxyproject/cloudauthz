@@ -11,3 +11,9 @@ env:
   - TOX_ENV=py27-first_startup
   - TOX_ENV=py27-lint_docstring_include_list
   - TOX_ENV=check_python_dependencies
+
+install:
+  - pip install tox
+
+script:
+  - tox -e $TOX_ENV
