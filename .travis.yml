@@ -4,13 +4,8 @@ python: 2.7
 os:
   - linux
 env:
-  - TOX_ENV=py34-lint
-  - TOX_ENV=py27-lint
-  - TOX_ENV=py27-unit
-  - TOX_ENV=qunit
-  - TOX_ENV=py27-first_startup
-  - TOX_ENV=py27-lint_docstring_include_list
-  - TOX_ENV=check_python_dependencies
+  - TOX_ENV=py27
+  - TOX_ENV=py36
 
 install:
   - pip install tox
