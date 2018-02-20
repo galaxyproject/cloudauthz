@@ -15,9 +15,11 @@ class InvalidTokenException(CloudAuthzBaseException):
     """
     Represents errors that occur during ID token utilization.
     """
+    def __init__(self, message):
+        self.message = message
 
     def __str__(self):
-        return "The ID token is invalid."
+        return self.message
 
 
 class ExpiredTokenException(CloudAuthzBaseException):
