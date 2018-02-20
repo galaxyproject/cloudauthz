@@ -37,7 +37,6 @@ class Authorize(IProvider):
         else:
             return CloudAuthzBaseException
 
-
     def get_credentials(self, identity_token, role_arn, duration, role_session_name):
         """
         Assumes an AWS Role and returns credentials accordingly.
