@@ -28,4 +28,4 @@ class ExpiredTokenException(CloudAuthzBaseException):
         self.message = message
 
     def __str__(self):
-        return "Token expired. Provider message: {}".format(self.message)
+        return self.message
