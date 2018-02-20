@@ -41,4 +41,5 @@ class AccessDeniedException(CloudAuthzBaseException):
         self.message = message
 
     def __str__(self):
-        return self.message
+        return self.message + ". You may not have access to the resource, or miss-spelled a resource name " \
+                              "(e.g., incorrect ARN)."
