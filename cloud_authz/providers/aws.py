@@ -36,6 +36,8 @@ class Authorize(IProvider):
             return ExpiredTokenException(message)
         elif code == 'AccessDenied':
             return AccessDeniedException(message)
+        elif code == 'InvalidIdentityToken':
+            return InvalidTokenException(message)
         else:
             return CloudAuthzBaseException
 
