@@ -28,7 +28,15 @@ class Authorize(IProvider):
         :rtype : CloudAuthzBaseException (or any of its derived classes)
         :return: a CloudAuthz exception w.r.t. AWS STS error code.
         """
-        return ExpiredTokenException("Token expired")
+        root = ET.fromstring(response)
+        error = root.find('{}Error'.format(self.namespace))
+        code = error.find('{}Code'.format(self.namespace)).text
+        message = error.find('{}Message'.format(self.namespace)).text
+        if code == 'ExpiredTokenException':
+            return ExpiredTokenException(message)
+        else:
+            return CloudAuthzBaseException
+
 
     def get_credentials(self, identity_token, role_arn, duration, role_session_name):
         """
