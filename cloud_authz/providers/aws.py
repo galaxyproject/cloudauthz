@@ -34,6 +34,8 @@ class Authorize(IProvider):
         message = error.find('{}Message'.format(self.namespace)).text
         if code == 'ExpiredTokenException':
             return ExpiredTokenException(message)
+        elif code == 'AccessDenied':
+            return AccessDeniedException(message)
         else:
             return CloudAuthzBaseException
 
