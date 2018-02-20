@@ -18,6 +18,18 @@ class Authorize(IProvider):
     def __init__(self):
         pass
 
+    def __parse_error(self, response):
+        """
+        Parses the AWS STS xml-based error response, and throws appropriate exception.
+
+        :type  response: string
+        :param response: error xml
+
+        :rtype : CloudAuthzBaseException (or any of its derived classes)
+        :return: a CloudAuthz exception w.r.t. AWS STS error code.
+        """
+        return ExpiredTokenException("Token expired")
+
     def get_credentials(self, identity_token, role_arn, duration, role_session_name):
         """
         Assumes an AWS Role and returns credentials accordingly.
@@ -62,4 +74,4 @@ class Authorize(IProvider):
                 rtv[attribute.tag.replace(self.namespace, '')] = attribute.text
             return rtv
         else:
-            raise ExpiredTokenException("Token expired")
+            raise self.__parse_error(response.content)
