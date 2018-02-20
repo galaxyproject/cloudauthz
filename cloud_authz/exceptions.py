@@ -29,3 +29,16 @@ class ExpiredTokenException(CloudAuthzBaseException):
 
     def __str__(self):
         return self.message
+
+
+class AccessDeniedException(CloudAuthzBaseException):
+    """
+    Represents errors that occur when accessing resources that
+    the either the user is not allowed to, or if any of the
+    resources is miss-spelled.
+    """
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
