@@ -16,7 +16,7 @@ class InvalidTokenException(CloudAuthzBaseException):
     Represents errors that occur during ID token utilization.
     """
     def __init__(self, message):
-        CloudAuthzBaseException.__init__(message)
+        CloudAuthzBaseException.__init__(self, message)
 
     def __str__(self):
         return self.message
@@ -27,7 +27,7 @@ class ExpiredTokenException(CloudAuthzBaseException):
     Represents errors that occur when utilizing expired tokens.
     """
     def __init__(self, message):
-        CloudAuthzBaseException.__init__(message)
+        CloudAuthzBaseException.__init__(self, message)
 
     def __str__(self):
         return self.message
@@ -40,7 +40,7 @@ class AccessDeniedException(CloudAuthzBaseException):
     resources is miss-spelled.
     """
     def __init__(self, message):
-        CloudAuthzBaseException.__init__(message)
+        CloudAuthzBaseException.__init__(self, message)
 
     def __str__(self):
         return self.message + ". You may not have access to the resource, or miss-spelled a resource name " \
