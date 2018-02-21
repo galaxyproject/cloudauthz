@@ -39,7 +39,7 @@ class Authorize(IProvider):
         elif code == 'InvalidIdentityToken':
             return InvalidTokenException(message)
         else:
-            return CloudAuthzBaseException
+            return CloudAuthzBaseException(message)
 
     def get_credentials(self, identity_token, role_arn, duration, role_session_name):
         """
