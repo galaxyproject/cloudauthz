@@ -43,5 +43,6 @@ class AccessDeniedException(CloudAuthzBaseException):
         CloudAuthzBaseException.__init__(self, message)
 
     def __str__(self):
-        return self.message + ". You may not have access to the resource, or miss-spelled a resource name " \
-                              "(e.g., incorrect ARN)."
+        return self.message + ". You may not have access to the resource, or miss-spelled a configuration " \
+                              "(e.g., incorrect amazon resource name, or an incorrect `aud` (Audience) is " \
+                              "set on the resource provider)."
