@@ -21,9 +21,6 @@ class InvalidTokenException(CloudAuthzBaseException):
     def __init__(self, message):
         CloudAuthzBaseException.__init__(self, message)
 
-    def __str__(self):
-        return self.message
-
 
 class ExpiredTokenException(CloudAuthzBaseException):
     """
@@ -31,9 +28,6 @@ class ExpiredTokenException(CloudAuthzBaseException):
     """
     def __init__(self, message):
         CloudAuthzBaseException.__init__(self, message)
-
-    def __str__(self):
-        return self.message
 
 
 class AccessDeniedException(CloudAuthzBaseException):
