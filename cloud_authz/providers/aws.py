@@ -1,6 +1,8 @@
 """
 Implements means of exchanging user ID token with temporary access and secret key.
 """
+
+from ..exceptions import *
 from ..interfaces.providers import *
 
 import requests
@@ -15,6 +17,29 @@ class Authorize(IProvider):
 
     def __init__(self):
         pass
+
+    def __parse_error(self, response):
+        """
+        Parses the AWS STS xml-based error response, and throws appropriate exception.
+
+        :type  response: string
+        :param response: error xml
+
+        :rtype : CloudAuthzBaseException (or any of its derived classes)
+        :return: a CloudAuthz exception w.r.t. AWS STS error code.
+        """
+        root = ET.fromstring(response)
+        error = root.find('{}Error'.format(self.namespace))
+        code = error.find('{}Code'.format(self.namespace)).text
+        message = error.find('{}Message'.format(self.namespace)).text
+        if code == 'ExpiredTokenException':
+            return ExpiredTokenException(message)
+        elif code == 'AccessDenied':
+            return AccessDeniedException(message)
+        elif code == 'InvalidIdentityToken':
+            return InvalidTokenException(message)
+        else:
+            return CloudAuthzBaseException(message)
 
     def get_credentials(self, identity_token, role_arn, duration, role_session_name):
         """
@@ -50,11 +75,14 @@ class Authorize(IProvider):
               "WebIdentityToken={}"\
             .format(duration, self.action, self.version, role_session_name,role_arn, identity_token)
         response = requests.get(url)
-        root = ET.fromstring(response.content)
 
-        rtv = {}
-        role_assume_result = root.find('{}AssumeRoleWithWebIdentityResult'.format(self.namespace))
-        credentials = role_assume_result.find('{}Credentials'.format(self.namespace))
-        for attribute in credentials:
-            rtv[attribute.tag.replace(self.namespace, '')] = attribute.text
-        return rtv
+        if response.ok:
+            root = ET.fromstring(response.content)
+            rtv = {}
+            role_assume_result = root.find('{}AssumeRoleWithWebIdentityResult'.format(self.namespace))
+            credentials = role_assume_result.find('{}Credentials'.format(self.namespace))
+            for attribute in credentials:
+                rtv[attribute.tag.replace(self.namespace, '')] = attribute.text
+            return rtv
+        else:
+            raise self.__parse_error(response.content)
