@@ -26,7 +26,7 @@ REQ = [
 ]
 
 setup(
-    name='cloud-authz',
+    name='cloudauthz',
     version=version,
     description='Implements means of authorization delegation on cloud-based resource providers.',
     long_description=long_description,
