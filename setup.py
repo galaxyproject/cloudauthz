@@ -37,7 +37,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
     ],
-    url='https://github.com/galaxyproject/cloud-authz',
+    url='https://github.com/galaxyproject/cloudauthz',
     install_requires=REQ,
     license='MIT',
     keywords='Cloud Authorization Access',
