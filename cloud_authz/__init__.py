@@ -23,5 +23,5 @@ class CloudAuthz:
                 config['id_token'],
                 config['role_arn'],
                 config.get('role_session_name', 900),
-                config.get('role_session_name', 'cloud-authz'))
+                config.get('role_session_name', 'cloudauthz'))
         raise NotImplementedError("Authorization flow for the provider `{}` is not implemented.".format(provider))
