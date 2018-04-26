@@ -14,7 +14,7 @@ with open(path.join(current_directory, 'README.md')) as f:
     long_description = f.read()
 
 prog = re.compile(r'__version__\s*=\s*(.+)')
-with open(path.join(current_directory, 'cloud_authz', '__init__.py')) as f:
+with open(path.join(current_directory, 'cloudauthz', '__init__.py')) as f:
     for l in f:
         match_object = prog.match(l)
         if match_object:
