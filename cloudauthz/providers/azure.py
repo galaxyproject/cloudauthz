@@ -13,7 +13,7 @@ class Authorize(IProvider):
 
     def __parse_error(self, exception):
         if isinstance(exception, adal.adal_error.AdalError):
-            return InvalidRequestException(exception.error_response)
+            return InvalidRequestException(str(exception.error_response))
 
     def get_credentials(self, tenant_id, client_id, client_secret):
         authority_url = self.AUTH_ENDPOINT.format(tenant_id)
