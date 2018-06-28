@@ -22,7 +22,8 @@ with open(path.join(current_directory, 'cloudauthz', '__init__.py')) as f:
             break
 
 REQ = [
-    'requests == 2.18.4'
+    'requests == 2.18.4',
+    'adal ==1.0.2'
 ]
 
 setup(
