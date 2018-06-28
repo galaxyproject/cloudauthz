@@ -43,3 +43,12 @@ class AccessDeniedException(CloudAuthzBaseException):
         return self.message + ". You may not have access to the resource, or miss-spelled a configuration " \
                               "(e.g., incorrect amazon resource name, or an incorrect `aud` (Audience) is " \
                               "set on the resource provider)."
+
+class InvalidRequestException(CloudAuthzBaseException):
+    """
+    Represents errors that occur when an invalid request is made
+    to the resource provider. For instance, an invalid `Tenant name`
+    on Microsoft Azure.
+    """
+    def __init__(self, message):
+        CloudAuthzBaseException.__init__(self, message)
