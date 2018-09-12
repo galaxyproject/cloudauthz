@@ -2,7 +2,7 @@
 Implements means of delegating access to cloud-based resources.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from .providers import aws
 from .providers import azure
