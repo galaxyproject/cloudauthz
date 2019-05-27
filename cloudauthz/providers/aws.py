@@ -2,11 +2,11 @@
 Implements means of exchanging user ID token with temporary access and secret key.
 """
 
+import xml.etree.ElementTree as ET
+import requests
+
 from ..exceptions import *
 from ..interfaces.providers import *
-
-import requests
-import xml.etree.ElementTree as ET
 
 
 class Authorize(IProvider):

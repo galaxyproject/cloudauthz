@@ -2,10 +2,10 @@
 Implements means of exchanging client credentials with temporary access token to access Azure.
 """
 
+import adal
+
 from ..exceptions import *
 from ..interfaces.providers import *
-
-import adal
 
 
 class Authorize(IProvider):
