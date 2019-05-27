@@ -44,6 +44,7 @@ class AccessDeniedException(CloudAuthzBaseException):
                               "(e.g., incorrect amazon resource name, or an incorrect `aud` (Audience) is " \
                               "set on the resource provider)."
 
+
 class InvalidRequestException(CloudAuthzBaseException):
     """
     Represents errors that occur when an invalid request is made
