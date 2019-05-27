@@ -2,10 +2,11 @@
 Implements means of delegating access to cloud-based resources.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from .providers import aws
 from .providers import azure
+from .providers import gcp
 
 
 class CloudAuthz:
@@ -34,5 +35,14 @@ class CloudAuthz:
             if "client_secret" not in config:
                 raise KeyError("`client_secret` is not provided.")
             return authz.get_credentials(config["tenant_id"], config["client_id"], config["client_secret"])
+        elif provider.lower() == "gcp":
+            if "client_service_account" not in config:
+                raise KeyError("`client_service_account` is not provided.")
+            if "server_service_account_credentials_filename" not in config:
+                raise KeyError("`server_service_account_credentials_filename` is not provided.")
+            authz = gcp.Authorize()
+            return authz.get_credentials(
+                config["client_service_account"],
+                config["server_service_account_credentials_filename"])
         else:
             raise NotImplementedError("Authorization flow for the provider `{}` is not implemented.".format(provider))
