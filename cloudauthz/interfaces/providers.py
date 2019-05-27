@@ -13,6 +13,22 @@ class IProvider:
     __metaclass__ = ABCMeta
 
     @abstractmethod
+    def assert_config(self, config):
+        """
+        Asserts if the config dictionary contains all the keys
+        necessary for obtaining credentials, and raises an exception
+        if a required key is missing, or if the value of a key
+        does not have an expected format.
+
+        :type  config:  dict
+        :param config:  contains all the information necessary
+        for obtaining temporary credentials from the provider.
+
+        :return: void
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def get_credentials(self, **kwargs):
         """
         Implements means of obtaining credentials to access resources on the provider.

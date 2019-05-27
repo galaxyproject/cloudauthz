@@ -20,6 +20,12 @@ class Authorize(IProvider):
               "https://www.googleapis.com/auth/cloud-platform"]
     CREDS_ENV_VAR = "GOOGLE_APPLICATION_CREDENTIALS"
 
+    def assert_config(self, config):
+        if "client_service_account" not in config:
+            raise KeyError("`client_service_account` is not provided.")
+        if "server_service_account_credentials_filename" not in config:
+            raise KeyError("`server_service_account_credentials_filename` is not provided.")
+
     def get_credentials(self, client_service_account,
                         server_service_account_credentials_filename,
                         token_ttl=3600):

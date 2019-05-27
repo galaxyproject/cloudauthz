@@ -7,6 +7,7 @@ from ..interfaces.providers import *
 
 import adal
 
+
 class Authorize(IProvider):
     AUTH_ENDPOINT = "https://login.microsoftonline.com/{}"
     RESOURCE = "https://storage.azure.com/"
@@ -14,6 +15,14 @@ class Authorize(IProvider):
     def __parse_error(self, exception):
         if isinstance(exception, adal.adal_error.AdalError):
             return InvalidRequestException(str(exception.error_response))
+
+    def assert_config(self, config):
+        if "tenant_id" not in config:
+            raise KeyError("`tenant_id` is not provided.")
+        if "client_id" not in config:
+            raise KeyError("`client_id` is not provided.")
+        if "client_secret" not in config:
+            raise KeyError("`client_secret` is not provided.")
 
     def get_credentials(self, tenant_id, client_id, client_secret):
         authority_url = self.AUTH_ENDPOINT.format(tenant_id)

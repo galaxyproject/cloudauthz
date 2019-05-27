@@ -41,6 +41,12 @@ class Authorize(IProvider):
         else:
             return CloudAuthzBaseException(message)
 
+    def assert_config(self, config):
+        if 'id_token' not in config:
+            raise KeyError("`id_token` is not provided.")
+        if 'role_arn' not in config:
+            raise KeyError("`role_arn` is not provided.")
+
     def get_credentials(self, identity_token, role_arn, duration, role_session_name):
         """
         Assumes an AWS Role and returns credentials accordingly.
