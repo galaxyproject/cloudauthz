@@ -8,7 +8,9 @@ Install the latest release from PyPi:
 
 ## Example
 
-Using AWS backend: 
+CloudAuthz can authorize access to [Amazon Web Services (AWS)](#amazon-web-services), [Microsoft Azure](#microsoft-azure), and [Google Cloud Platform (GCP)](#google-cloud-platform). An example for each provider is given in the following.
+
+### Amazon Web Services
 
 ```python
 from cloudauthz import *
@@ -21,7 +23,7 @@ config = {
 credentials = cloudauthz.authorize("aws", config)
 ```
 
-an example of the `credentials` is as following:
+The `credentials` object is a dictionary as the following:
 
 ```json
 {
@@ -32,7 +34,7 @@ an example of the `credentials` is as following:
 }
 ```
 
-An example on using Microsoft Azure backend: 
+### Microsoft Azure
 
 ```python
 from cloudauthz import *
@@ -46,7 +48,7 @@ config = {
 credentials = cloudauthz.authorize("azure", config)
 ```
 
-An example of `res` is as the following: 
+The `credentials` object is a dictionary as the following:
 
 ```json
 {
@@ -55,14 +57,13 @@ An example of `res` is as the following:
     "resource": "https://storage.azure.com/",
     "tokenType": "Bearer",
     "expiresOn": "2018-06-28 12:30:24.895661",
-    "isMRRT": True,
+    "isMRRT": true,
     "_clientId": " ... ",
     "accessToken": " ... ",
 }
 ```
 
-
-An example of using Google Cloud Platform (GCP) backend:
+### Google Cloud Platform
 
 ```python
 from cloudauthz import *
