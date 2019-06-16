@@ -31,9 +31,9 @@ class Authorize(IProvider):
             raise KeyError("`client_service_account` is not provided.")
         self.client_service_account = config["client_service_account"]
 
-        if "server_service_account_credentials_filename" not in config:
-            raise KeyError("`server_service_account_credentials_filename` is not provided.")
-        self.creds_filename = config["server_service_account_credentials_filename"]
+        if "server_credentials" not in config:
+            raise KeyError("`server_credentials` is not provided.")
+        self.creds_filename = config["server_credentials"]
 
         self.token_ttl = config.get('token_ttl', 3600)
 

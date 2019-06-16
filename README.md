@@ -71,7 +71,7 @@ from cloudauthz import *
 cloudauthz = CloudAuthz()
 config = {
     "client_service_account": " ... ", 
-    "server_service_account_credentials_filename": " ... "}
+    "server_credentials": " ... "}
 credentials = cloudauthz.authorize("gcp", config)
 ```
 
