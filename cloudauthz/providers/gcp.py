@@ -32,12 +32,14 @@ class Authorize(IProvider):
     def __parse_error(self, response):
         try:
             response = json.loads(response.content)
-            # contains the error details as sent by the provider.
             details = response
             error_code = response["error"]["code"]
             messages = []
             for m in response["error"]["errors"]:
-                messages.append(m["message"])
+                hint = ""
+                if "Requested entity was not found" in m["message"]:
+                    hint = " (hint: you may have misspelled the client service account name.)"
+                messages.append(m["message"] + hint)
             messages = ', '.join(messages)
             if error_code == 404:
                 return InvalidRequestException(messages, error_code, details)
