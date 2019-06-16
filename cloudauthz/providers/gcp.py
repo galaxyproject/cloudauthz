@@ -4,13 +4,16 @@ service account to obtain temporary access token to access
 GCP resources.
 """
 
-import os
 import httplib2
+import json
+import os
 
 from apiclient.discovery import build
+from googleapiclient import errors
 from oauth2client.client import AccessTokenCredentials
 from oauth2client.client import GoogleCredentials
 
+from ..exceptions import *
 from ..interfaces.providers import *
 
 
@@ -25,6 +28,23 @@ class Authorize(IProvider):
         self.client_service_account = None
         self.creds_filename = None
         super(Authorize, self).__init__(config)
+
+    def __parse_error(self, response):
+        try:
+            response = json.loads(response.content)
+            # contains the error details as sent by the provider.
+            details = response.content
+            error_code = response["error"]["code"]
+            messages = []
+            for m in response["error"]["errors"]:
+                messages.append(m["message"])
+            messages = ', '.join(messages)
+            if error_code == 404:
+                return InvalidRequestException(messages)
+            else:
+                return CloudAuthzBaseException(messages)
+        except:
+            return CloudAuthzBaseException(response)
 
     def expand_config(self, config):
         if "client_service_account" not in config:
@@ -50,16 +70,19 @@ class Authorize(IProvider):
             "lifetime": "{}s".format(self.token_ttl)
         }
 
-        access_token = build(
-            serviceName='iamcredentials',
-            version='v1',
-            http=http
-        ).projects().serviceAccounts().generateAccessToken(
-            name="projects/{}/serviceAccounts/{}".format(
-                self.PRJ_ID_WILDCARD_CHAR,
-                self.client_service_account),
-            body=body
-        ).execute()["accessToken"]
+        try:
+            access_token = build(
+                serviceName='iamcredentials',
+                version='v1',
+                http=http
+            ).projects().serviceAccounts().generateAccessToken(
+                name="projects/{}/serviceAccounts/{}".format(
+                    self.PRJ_ID_WILDCARD_CHAR,
+                    self.client_service_account),
+                body=body
+            ).execute()["accessToken"]
 
-        credentials = AccessTokenCredentials(access_token, "MyAgent/1.0", None)
-        return credentials
+            credentials = AccessTokenCredentials(access_token, "MyAgent/1.0", None)
+            return credentials
+        except errors.HttpError as e:
+            raise self.__parse_error(e)
