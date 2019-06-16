@@ -44,7 +44,7 @@ class Authorize(IProvider):
             if error_code == 404:
                 return InvalidRequestException(messages, error_code, details)
             else:
-                return CloudAuthzBaseException(messages)
+                return CloudAuthzBaseException(messages, error_code, details)
         except:
             return CloudAuthzBaseException(response)
 
