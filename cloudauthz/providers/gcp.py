@@ -33,14 +33,14 @@ class Authorize(IProvider):
         try:
             response = json.loads(response.content)
             # contains the error details as sent by the provider.
-            details = response.content
+            details = response
             error_code = response["error"]["code"]
             messages = []
             for m in response["error"]["errors"]:
                 messages.append(m["message"])
             messages = ', '.join(messages)
             if error_code == 404:
-                return InvalidRequestException(messages)
+                return InvalidRequestException(messages, error_code, details)
             else:
                 return CloudAuthzBaseException(messages)
         except:
