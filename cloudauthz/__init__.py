@@ -2,7 +2,7 @@
 Implements means of delegating access to cloud-based resources.
 """
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 
 from .providers import aws
 from .providers import azure
@@ -21,6 +21,7 @@ class CloudAuthz:
             authz = azure.Authorize(config)
         elif provider.lower() == "gcp":
             authz = gcp.Authorize(config)
+            return authz.get_impersonated_credentials()
         else:
             raise NotImplementedError("Authorization flow for the provider `{}` is not implemented.".format(provider))
         return authz.get_credentials()

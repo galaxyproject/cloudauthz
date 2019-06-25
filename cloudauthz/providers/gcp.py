@@ -10,6 +10,8 @@ import os
 
 from apiclient.discovery import build
 from googleapiclient import errors
+from google.auth import impersonated_credentials
+from google.oauth2 import service_account
 from oauth2client.client import AccessTokenCredentials
 from oauth2client.client import GoogleCredentials
 
@@ -88,3 +90,51 @@ class Authorize(IProvider):
             return credentials
         except errors.HttpError as e:
             raise self.__parse_error(e)
+
+    def get_impersonated_credentials(self):
+        # TODO: ideally setting up this environment variable
+        # should be avoided; however, at the moment it is
+        # required for the construction of the `Client` type.
+        os.environ[self.CREDS_ENV_VAR] = self.creds_filename
+
+        # The server_credentials object is of type:
+        # google.oauth2.service_account.Credentials
+        server_credentials = service_account.Credentials.from_service_account_file(
+            self.creds_filename,
+            scopes=self.SCOPES)
+
+        server_credentials = Credentials(server_credentials)
+
+        # The target_credentials object is of type:
+        # google.auth.impersonated_credentials.Credentials
+        #
+        # Also note that for using this service, you would
+        # need to have a G Suite account for its required
+        # configuration:
+        # https://developers.google.com/identity/protocols/OAuth2ServiceAccount#delegatingauthority
+        client_credentials = impersonated_credentials.Credentials(
+            source_credentials=server_credentials,
+            target_principal=self.client_service_account,
+            target_scopes=self.SCOPES,
+            lifetime=self.token_ttl)
+
+        # Ideally this method should return client_credentials,
+        # but that type does not implement a method for signing
+        # blobs, which is required to generated signed URLs as
+        # needed in Galaxy.
+        return server_credentials
+
+
+class Credentials(service_account.Credentials):
+    def __init__(self, base):
+        super(Credentials, self).__init__(
+            base._signer,
+            base._service_account_email,
+            base._token_uri,
+            base._scopes,
+            base._subject,
+            base._project_id,
+            base._additional_claims)
+
+    def sign_blob(self, blob):
+        return None, self._signer.sign(blob)
