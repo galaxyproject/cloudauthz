@@ -75,10 +75,5 @@ config = {
 credentials = cloudauthz.authorize("gcp", config)
 ```
 
-The `credentials` object is an instance of `oauth2client.client.AccessTokenCredentials`.
-GCP clients can be constructed using this object; however, if an access token is required, 
-you may obtain one using the `access_token` property of this instance:
-
-```python
-credentials.access_token
-```
+The `credentials` object is an instance of `cloudauthz.providers.gcp.Credentials` 
+that inherits from `google.oauth2.service_account.Credentials`.
