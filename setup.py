@@ -32,7 +32,7 @@ setup(
     description='Implements means of authorization delegation on cloud-based resource providers.',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author='Vahid Jalili',
+    author='The Galaxy Team',
     author_email='jalili.vahid@gmail.com',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     classifiers=[
@@ -42,5 +42,5 @@ setup(
     url='https://github.com/galaxyproject/cloudauthz',
     install_requires=REQ,
     license='MIT',
-    keywords='Cloud Authorization Access',
+    keywords='Cloud Authorization',
 )
